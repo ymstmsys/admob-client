@@ -37,27 +37,18 @@ public class AdMobImpl implements AdMob {
 
     private String clientKey;
 
-    private String email;
-
-    private String password;
-
     private String token;
 
-    public AdMobImpl(String clientKey, String email, String password) {
+    public AdMobImpl(String clientKey) {
         this.clientKey = clientKey;
-        this.email = email;
-        this.password = password;
     }
 
     protected boolean isLogin() {
         return token != null;
     }
 
-    protected void login() {
-        if (isLogin()) {
-            return;
-        }
-
+    @Override
+    public void login(String email, String password) {
         String url = "https://api.admob.com/v2/auth/login";
         Map<String, String> entityMap = new LinkedHashMap<String, String>();
         entityMap.put("client_key", clientKey);
@@ -103,7 +94,7 @@ public class AdMobImpl implements AdMob {
     @Override
     public List<Site> siteSearch(List<String> siteIds, Boolean includeDeleted) {
         if (!isLogin()) {
-            login();
+            throw new RuntimeException("Not login.");
         }
 
         StringBuilder url = new StringBuilder("http://api.admob.com/v2/site/search");
@@ -159,12 +150,12 @@ public class AdMobImpl implements AdMob {
     @Override
     public List<SiteStat> siteStats(List<String> siteIds, String startDate, String endDate,
             ObjectDimension objectDimension, TimeDimension timeDimension) {
-        if (siteIds.size() == 0) {
-            return new ArrayList<SiteStat>();
+        if (!isLogin()) {
+            throw new RuntimeException("Not login.");
         }
 
-        if (!isLogin()) {
-            login();
+        if (siteIds.size() == 0) {
+            return new ArrayList<SiteStat>();
         }
 
         StringBuilder url = new StringBuilder("http://api.admob.com/v2/site/stats");

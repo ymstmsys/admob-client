@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface AdMob {
 
+    public void login(String email, String password);
+
     public void logout();
 
     public List<Site> siteSearch();
