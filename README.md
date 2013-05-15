@@ -2,7 +2,6 @@ AdMob Java client
 =================
 
 Wrapping AdMob API to Java SDK.
-
 You should edit src/test/java/admob.empty.properties and create src/test/java/admob.properties in order to run unit tests.  
 
 ### Wrapped API operations are:
