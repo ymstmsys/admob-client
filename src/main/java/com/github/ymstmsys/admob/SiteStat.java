@@ -1,6 +1,7 @@
 package com.github.ymstmsys.admob;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author ymstmsys
@@ -31,29 +32,29 @@ public class SiteStat implements Serializable {
 
     private long interstitialImpressions;
 
-    private double fillRate;
+    private BigDecimal fillRate;
 
-    private double houseadFillRate;
+    private BigDecimal houseadFillRate;
 
-    private double overallFillRate;
+    private BigDecimal overallFillRate;
 
     private long clicks;
 
     private long houseadClicks;
 
-    private double ctr;
+    private BigDecimal ctr;
 
-    private double houseadCtr;
+    private BigDecimal houseadCtr;
 
-    private double ecpm;
+    private BigDecimal ecpm;
 
-    private double revenue;
+    private BigDecimal revenue;
 
-    private double cpcRevenue;
+    private BigDecimal cpcRevenue;
 
-    private double cpmRevenue;
+    private BigDecimal cpmRevenue;
 
-    private double exchangeDownloads;
+    private BigDecimal exchangeDownloads;
 
     private String date;
 
@@ -145,27 +146,27 @@ public class SiteStat implements Serializable {
         this.interstitialImpressions = interstitialImpressions;
     }
 
-    public double getFillRate() {
+    public BigDecimal getFillRate() {
         return fillRate;
     }
 
-    public void setFillRate(double fillRate) {
+    public void setFillRate(BigDecimal fillRate) {
         this.fillRate = fillRate;
     }
 
-    public double getHouseadFillRate() {
+    public BigDecimal getHouseadFillRate() {
         return houseadFillRate;
     }
 
-    public void setHouseadFillRate(double houseadFillRate) {
+    public void setHouseadFillRate(BigDecimal houseadFillRate) {
         this.houseadFillRate = houseadFillRate;
     }
 
-    public double getOverallFillRate() {
+    public BigDecimal getOverallFillRate() {
         return overallFillRate;
     }
 
-    public void setOverallFillRate(double overallFillRate) {
+    public void setOverallFillRate(BigDecimal overallFillRate) {
         this.overallFillRate = overallFillRate;
     }
 
@@ -185,59 +186,59 @@ public class SiteStat implements Serializable {
         this.houseadClicks = houseadClicks;
     }
 
-    public double getCtr() {
+    public BigDecimal getCtr() {
         return ctr;
     }
 
-    public void setCtr(double ctr) {
+    public void setCtr(BigDecimal ctr) {
         this.ctr = ctr;
     }
 
-    public double getHouseadCtr() {
+    public BigDecimal getHouseadCtr() {
         return houseadCtr;
     }
 
-    public void setHouseadCtr(double houseadCtr) {
+    public void setHouseadCtr(BigDecimal houseadCtr) {
         this.houseadCtr = houseadCtr;
     }
 
-    public double getEcpm() {
+    public BigDecimal getEcpm() {
         return ecpm;
     }
 
-    public void setEcpm(double ecpm) {
+    public void setEcpm(BigDecimal ecpm) {
         this.ecpm = ecpm;
     }
 
-    public double getRevenue() {
+    public BigDecimal getRevenue() {
         return revenue;
     }
 
-    public void setRevenue(double revenue) {
+    public void setRevenue(BigDecimal revenue) {
         this.revenue = revenue;
     }
 
-    public double getCpcRevenue() {
+    public BigDecimal getCpcRevenue() {
         return cpcRevenue;
     }
 
-    public void setCpcRevenue(double cpcRevenue) {
+    public void setCpcRevenue(BigDecimal cpcRevenue) {
         this.cpcRevenue = cpcRevenue;
     }
 
-    public double getCpmRevenue() {
+    public BigDecimal getCpmRevenue() {
         return cpmRevenue;
     }
 
-    public void setCpmRevenue(double cpmRevenue) {
+    public void setCpmRevenue(BigDecimal cpmRevenue) {
         this.cpmRevenue = cpmRevenue;
     }
 
-    public double getExchangeDownloads() {
+    public BigDecimal getExchangeDownloads() {
         return exchangeDownloads;
     }
 
-    public void setExchangeDownloads(double exchangeDownloads) {
+    public void setExchangeDownloads(BigDecimal exchangeDownloads) {
         this.exchangeDownloads = exchangeDownloads;
     }
 
