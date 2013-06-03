@@ -3,6 +3,8 @@ package com.github.ymstmsys.admob;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONException;
+
 /**
  * AdMob API client interface.
  * 
@@ -15,8 +17,10 @@ public interface AdMob {
 	 * 
 	 * @param email
 	 * @param password
+	 * @throws JSONException
+	 * @throws AdMobLoginException
 	 */
-	public void login(String email, String password);
+	public void login(String email, String password) throws AdMobLoginException;
 
 	/**
 	 * Logs out user from AdMob.
@@ -27,8 +31,9 @@ public interface AdMob {
 	 * Retrieves all sites.
 	 * 
 	 * @return
+	 * @throws AdMobLoginException 
 	 */
-	public List<Site> siteSearch();
+	public List<Site> siteSearch() throws AdMobLoginException;
 
 	/**
 	 * Retrieves specific sites with option to include or remove deleted.
@@ -36,8 +41,9 @@ public interface AdMob {
 	 * @param siteIds
 	 * @param includeDeleted
 	 * @return
+	 * @throws AdMobLoginException 
 	 */
-	public List<Site> siteSearch(List<String> siteIds, Boolean includeDeleted);
+	public List<Site> siteSearch(List<String> siteIds, Boolean includeDeleted) throws AdMobLoginException;
 
 	/**
 	 * Retrieves site statistics for given period.
@@ -46,9 +52,10 @@ public interface AdMob {
 	 * @param startDate
 	 * @param endDate
 	 * @return
+	 * @throws AdMobLoginException
 	 */
 	public List<SiteStat> siteStats(List<String> siteIds, String startDate,
-			String endDate);
+			String endDate) throws AdMobLoginException;
 
 	/**
 	 * Retrieves site statistics for given period.
@@ -57,9 +64,10 @@ public interface AdMob {
 	 * @param startDate
 	 * @param endDate
 	 * @return
+	 * @throws AdMobLoginException
 	 */
 	public List<SiteStat> siteStats(List<Site> sites, Date startDate,
-			Date endDate);
+			Date endDate) throws AdMobLoginException;
 
 	/**
 	 * Retrieves site statistics for give period.
@@ -78,10 +86,11 @@ public interface AdMob {
 	 * @param objectDimension
 	 * @param timeDimension
 	 * @return
+	 * @throws AdMobLoginException
 	 */
 	public List<SiteStat> siteStats(List<String> siteIds, String startDate,
 			String endDate, ObjectDimension objectDimension,
-			TimeDimension timeDimension);
+			TimeDimension timeDimension) throws AdMobLoginException;
 
 	/**
 	 * Retrieves site statistics for give period.
@@ -100,9 +109,10 @@ public interface AdMob {
 	 * @param objectDimension
 	 * @param timeDimension
 	 * @return
+	 * @throws AdMobLoginException
 	 */
 	public List<SiteStat> siteStats(List<Site> siteIds, Date startDate,
 			Date endDate, ObjectDimension objectDimension,
-			TimeDimension timeDimension);
+			TimeDimension timeDimension) throws AdMobLoginException;
 
 }

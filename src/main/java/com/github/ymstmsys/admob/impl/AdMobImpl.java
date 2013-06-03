@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.github.ymstmsys.admob.AdMob;
+import com.github.ymstmsys.admob.AdMobLoginException;
 import com.github.ymstmsys.admob.ObjectDimension;
 import com.github.ymstmsys.admob.Site;
 import com.github.ymstmsys.admob.SiteStat;
@@ -57,7 +58,7 @@ public class AdMobImpl implements AdMob {
 	public static final String ADMOB_AUTH_LOGIN = "https://api.admob.com/v2/auth/login";
 
 	@Override
-	public void login(String email, String password) {
+	public void login(String email, String password) throws AdMobLoginException {
 		String url = "https://api.admob.com/v2/auth/login";
 		Map<String, String> entityMap = new LinkedHashMap<String, String>();
 		entityMap.put("client_key", clientKey);
@@ -70,8 +71,7 @@ public class AdMobImpl implements AdMob {
 			JSONObject object = new JSONObject(response).getJSONObject("data");
 			token = object.getString("token");
 		} catch (JSONException e) {
-			logger.debug("Login failed with response " + response);
-			throw new RuntimeException(e);
+			throw new AdMobLoginException();
 		}
 	}
 
@@ -92,19 +92,21 @@ public class AdMobImpl implements AdMob {
 
 	/**
 	 * {@inheritDoc}
+	 * @throws AdMobLoginException 
 	 */
 	@Override
-	public List<Site> siteSearch() {
+	public List<Site> siteSearch() throws AdMobLoginException {
 		return siteSearch(null, null);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * @throws AdMobLoginException 
 	 */
 	@Override
-	public List<Site> siteSearch(List<String> siteIds, Boolean includeDeleted) {
+	public List<Site> siteSearch(List<String> siteIds, Boolean includeDeleted) throws AdMobLoginException {
 		if (!isLogin()) {
-			throw new RuntimeException("Not login.");
+			throw new AdMobLoginException();
 		}
 
 		StringBuilder url = new StringBuilder(
@@ -127,8 +129,10 @@ public class AdMobImpl implements AdMob {
 			JSONArray array = new JSONObject(response).getJSONArray("data");
 			return toSites(array);
 		} catch (JSONException e) {
-			throw new RuntimeException();
+			logger.info(e.getMessage());
 		}
+
+		return null;
 	}
 
 	protected List<Site> toSites(JSONArray array) throws JSONException {
@@ -150,22 +154,26 @@ public class AdMobImpl implements AdMob {
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws AdMobLoginException
 	 */
 	@Override
 	public List<SiteStat> siteStats(List<String> siteIds, String startDate,
-			String endDate) {
+			String endDate) throws AdMobLoginException {
 		return siteStats(siteIds, startDate, endDate, null, null);
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * 
+	 * @throws AdMobLoginException
 	 */
 	@Override
 	public List<SiteStat> siteStats(List<String> siteIds, String startDate,
 			String endDate, ObjectDimension objectDimension,
-			TimeDimension timeDimension) {
+			TimeDimension timeDimension) throws AdMobLoginException {
 		if (!isLogin()) {
-			throw new RuntimeException("Not login.");
+			throw new AdMobLoginException();
 		}
 
 		if (siteIds.size() == 0) {
@@ -193,9 +201,11 @@ public class AdMobImpl implements AdMob {
 			JSONArray array = new JSONObject(response).getJSONArray("data");
 			return toSiteStats(array);
 		} catch (JSONException e) {
-			logger.debug("Failed to fetch AdMob data with response: " + response);
-			throw new RuntimeException(e);
+			logger.debug("Failed to fetch AdMob data with response: "
+					+ response);
 		}
+
+		return null;
 	}
 
 	/*
@@ -206,8 +216,8 @@ public class AdMobImpl implements AdMob {
 	 */
 	@Override
 	public List<SiteStat> siteStats(List<Site> siteIds, Date startDate,
-			Date endDate) {
-		
+			Date endDate) throws AdMobLoginException {
+
 		List<String> sites = sitesToSiteIds(siteIds);
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -228,7 +238,7 @@ public class AdMobImpl implements AdMob {
 	@Override
 	public List<SiteStat> siteStats(List<Site> siteIds, Date startDate,
 			Date endDate, ObjectDimension objectDimension,
-			TimeDimension timeDimension) {
+			TimeDimension timeDimension) throws AdMobLoginException {
 		List<String> sites = sitesToSiteIds(siteIds);
 
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -264,8 +274,10 @@ public class AdMobImpl implements AdMob {
 			stat.setInterstitialImpressions(site
 					.optLong("interstitial_impressions"));
 			stat.setFillRate(new BigDecimal(site.optDouble("fill_rate")));
-			stat.setHouseadFillRate(new BigDecimal(site.optDouble("housead_fill_rate")));
-			stat.setOverallFillRate(new BigDecimal(site.optDouble("overall_fill_rate")));
+			stat.setHouseadFillRate(new BigDecimal(site
+					.optDouble("housead_fill_rate")));
+			stat.setOverallFillRate(new BigDecimal(site
+					.optDouble("overall_fill_rate")));
 			stat.setClicks(site.optLong("clicks"));
 			stat.setHouseadClicks(site.optLong("housead_clicks"));
 			stat.setCtr(new BigDecimal(site.optDouble("ctr")));
@@ -274,7 +286,8 @@ public class AdMobImpl implements AdMob {
 			stat.setRevenue(new BigDecimal(site.optDouble("revenue")));
 			stat.setCpcRevenue(new BigDecimal(site.optDouble("cpc_revenue")));
 			stat.setCpmRevenue(new BigDecimal(site.optDouble("cpm_revenue")));
-			stat.setExchangeDownloads(new BigDecimal(site.optDouble("exchange_downloads")));
+			stat.setExchangeDownloads(new BigDecimal(site
+					.optDouble("exchange_downloads")));
 			stat.setDate(site.optString("date"));
 
 			stats.add(stat);
@@ -318,8 +331,7 @@ public class AdMobImpl implements AdMob {
 								return EntityUtils.toString(
 										response.getEntity(), "UTF-8");
 							default:
-								throw new RuntimeException(response
-										.getStatusLine().toString());
+								return null;
 							}
 						}
 					});
@@ -327,10 +339,12 @@ public class AdMobImpl implements AdMob {
 			return response;
 
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			// ignore
 		} finally {
 			client.getConnectionManager().shutdown();
 		}
+
+		return null;
 	}
 
 	/**
@@ -361,8 +375,7 @@ public class AdMobImpl implements AdMob {
 								return EntityUtils.toString(
 										response.getEntity(), "UTF-8");
 							default:
-								throw new RuntimeException(response
-										.getStatusLine().toString());
+								return null;
 							}
 						}
 					});
@@ -370,10 +383,12 @@ public class AdMobImpl implements AdMob {
 			return response;
 
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			// ignore
 		} finally {
 			client.getConnectionManager().shutdown();
 		}
+
+		return null;
 	}
 
 }

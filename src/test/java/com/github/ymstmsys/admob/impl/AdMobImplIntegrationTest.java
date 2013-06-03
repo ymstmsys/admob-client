@@ -15,6 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.github.ymstmsys.admob.AdMob;
+import com.github.ymstmsys.admob.AdMobLoginException;
 import com.github.ymstmsys.admob.ObjectDimension;
 import com.github.ymstmsys.admob.SiteStat;
 import com.github.ymstmsys.admob.TimeDimension;
@@ -56,39 +57,40 @@ public class AdMobImplIntegrationTest {
 	}
 
 	@Test
-	public void successfullLogin() {
+	public void successfullLogin() throws AdMobLoginException {
 		adMob.login(email, password);
 	}
 
-	@Test(expected = RuntimeException.class)
-	public void wrongLoginByEmail() {
+	@Test(expected = AdMobLoginException.class)
+	public void wrongLoginByEmail() throws AdMobLoginException {
 		adMob.login(null, password);
 
 	}
 
-	@Test(expected = RuntimeException.class)
-	public void wrongLoginByEmailAndPassword() {
+	@Test(expected = AdMobLoginException.class)
+	public void wrongLoginByEmailAndPassword() throws AdMobLoginException {
 		adMob.login(null, null);
 	}
 
-	@Test(expected = RuntimeException.class)
-	public void wrongLoginByPassword() {
+	@Test(expected = AdMobLoginException.class)
+	public void wrongLoginByPassword() throws AdMobLoginException {
 		adMob.login(email, null);
 	}
 
 	@Test
-	public void siteSearchForAllApplications() {
+	public void siteSearchForAllApplications() throws AdMobLoginException {
 		adMob.login(email, password);
 		Assert.assertNotNull(adMob.siteSearch());
 	}
 
-	@Test(expected = RuntimeException.class)
-	public void siteSearchWithoutLoginCredentials() {
+	@Test(expected = AdMobLoginException.class)
+	public void siteSearchWithoutLoginCredentials() throws AdMobLoginException {
 		adMob.siteSearch();
 	}
 
 	@Test
-	public void siteStatsWithoutObjectAndTimeDimension() throws ParseException {
+	public void siteStatsWithoutObjectAndTimeDimension() throws ParseException,
+			AdMobLoginException {
 		adMob.login(email, password);
 		adMob.siteSearch();
 
@@ -102,7 +104,8 @@ public class AdMobImplIntegrationTest {
 	}
 
 	@Test
-	public void siteStatsWithObjectAndTimeDimension() throws ParseException {
+	public void siteStatsWithObjectAndTimeDimension() throws ParseException,
+			AdMobLoginException {
 		adMob.login(email, password);
 		adMob.siteSearch();
 

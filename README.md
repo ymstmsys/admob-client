@@ -30,3 +30,7 @@ Check unit and integration tests.
 
 * http://mm.admob.com/web/pdf/AdMob_API_Documentation.pdf
 
+### Version history
+
+* 1.0.1.RELEASE - remove runtime execptions and replace with AdMobLoginExcepiton and laeave JSONExceptions where is needed.
+* 1.0.0.RELEASE - add additonal methods for mapping by object.
