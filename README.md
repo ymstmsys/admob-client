@@ -32,5 +32,6 @@ Check unit and integration tests.
 
 ### Version history
 
+* 1.0.2.RELEASE - include maven shade plugin
 * 1.0.1.RELEASE - remove runtime execptions and replace with AdMobLoginExcepiton and laeave JSONExceptions where is needed.
 * 1.0.0.RELEASE - add additonal methods for mapping by object.
